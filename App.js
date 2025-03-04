@@ -1,11 +1,23 @@
 import React from "react";
-import Navbar from "./components/Navbar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import FlipkartNavBar from "./components/FlipkartNavBar";
+import ProductList from "./components/ProductList";
+import ProductCard from "./components/ProductCard";
+import ProductDetails from "./components/ProductDetails";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
-    <div>
-      <Navbar />
-    </div>
+    <Router>
+        <Routes>
+          <Route path="/" element={<FlipkartNavBar />} />
+          <Route path="/nabvar" element={<FlipkartNavBar />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/products-card" element={<ProductCard />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+        </Routes>
+    </Router>
   );
 }
 

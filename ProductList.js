@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect }  from "react";
 import ProductCard from "./ProductCard";
 import { useNavigate } from "react-router-dom";
+import "./styles.css"; // Make sure your CSS file is updated for better UI
 
-import "./styles.css";
 const productsData = [
     {
       id: 1,
@@ -182,60 +182,103 @@ const productsData = [
     },
    
    ];
+  const ProductsPerPage = 8;
 
-  const ProductList = () => {
-    const navigate = useNavigate();
-    const [filteredProducts, setFilteredProducts] = useState(productsData);
-    const [sortOption, setSortOption] = useState("");
-  
-    // Filter Products by Category
-    const handleFilter = (category) => {
-      if (category === "All") {
-        setFilteredProducts(productsData);
-      } else {
-        setFilteredProducts(productsData.filter((product) => product.category === category));
-      }
-    };
-  
-    // Sort Products by Price
-    const handleSort = (option) => {
-      let sortedProducts = [...filteredProducts];
-      if (option === "lowToHigh") {
-        sortedProducts.sort((a, b) => a.price - b.price);
-      } else if (option === "highToLow") {
-        sortedProducts.sort((a, b) => b.price - a.price);
-      }
-      setFilteredProducts(sortedProducts);
-      setSortOption(option);
-    };
-  
-    return (
-      <div className="product-page">
-        <h2 className="section-title">Explore Our Products</h2>
-  
-        {/* Filters & Sorting */}
-        <div className="filters">
-          <button onClick={() => handleFilter("All")}>All</button>
-          <button onClick={() => handleFilter("Electronics")}>Electronics</button>
-          <button onClick={() => handleFilter("Fashion")}>Fashion</button>
-          <select onChange={(e) => handleSort(e.target.value)} value={sortOption}>
-            <option value="">Sort By</option>
-            <option value="lowToHigh">Price: Low to High</option>
-            <option value="highToLow">Price: High to Low</option>
-          </select>
-        </div>
-  
-        {/* Product Grid */}
-        <div className="product-grid">
-          {filteredProducts.map((product) => (
-            <div key={product.id} onClick={() => navigate(`/product/${product.id}`)}>
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+const ProductList = () => {
+  const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState(productsData);
+  const [sortOption, setSortOption] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Filter Products by Category
+  const handleFilter = (category) => {
+    let newProducts =
+      category === "All"
+        ? productsData
+        : productsData.filter((product) => product.category === category);
+
+    setFilteredProducts(newProducts);
+    setCurrentPage(1); // Reset to first page when filtering
   };
-  
+
+  // Sort Products
+  const handleSort = (option) => {
+    let sortedProducts = [...filteredProducts];
+
+    if (option === "lowToHigh") {
+      sortedProducts.sort((a, b) => a.price - b.price);
+    } else if (option === "highToLow") {
+      sortedProducts.sort((a, b) => b.price - a.price);
+    }
+
+    setFilteredProducts(sortedProducts);
+    setSortOption(option);
+  };
+
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredProducts.length / ProductsPerPage);
+  const indexOfLastProduct = currentPage * ProductsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - ProductsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  return (
+    <div className="container">
+      {/* Title */}
+      <h2 className="section-title">Explore Our Products</h2>
+
+      {/* Filters & Sorting */}
+      <div className="filters">
+        <button className="filter-btn" onClick={() => handleFilter("All")}>All</button>
+        <button className="filter-btn" onClick={() => handleFilter("Electronics")}>Electronics</button>
+        <button className="filter-btn" onClick={() => handleFilter("Fashion")}>Fashion</button>
+
+        <select className="sort-dropdown" onChange={(e) => handleSort(e.target.value)} value={sortOption}>
+          <option value="">Sort By</option>
+          <option value="lowToHigh">Price: Low to High</option>
+          <option value="highToLow">Price: High to Low</option>
+        </select>
+      </div>
+
+      {/* Product Grid */}
+      <div className="product-grid">
+  {currentProducts.map((product) => (
+    <ProductCard key={product.id} product={product} />
+  ))}
+</div>
+
+       
+      
+
+      {/* Pagination */}
+      <div className="pagination">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className={`page-btn ${currentPage === 1 ? "disabled" : ""}`}
+        >
+          Prev
+        </button>
+
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`page-btn ${currentPage === i + 1 ? "active" : ""}`}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className={`page-btn ${currentPage === totalPages ? "disabled" : ""}`}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default ProductList;

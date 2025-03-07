@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import React, { useState, useContext } from "react";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { CartContext } from "../components/CartContext";
 import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
+import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 
-const FlipkartNavBar = () => {
+
+const FlipkartNavBar = ({product}) => {
   const navigate = useNavigate();
 
     const [cartCount, setCartCount] = useState(3); // Replace with actual cart count from state
@@ -21,6 +24,8 @@ const FlipkartNavBar = () => {
     autoplaySpeed: 3000,
     arrows: true,
   };
+  const { cart } = useContext(CartContext);
+  const { addToCart } = useContext(CartContext);
 
 
   return (
@@ -39,7 +44,15 @@ const FlipkartNavBar = () => {
           <Nav>
             <Nav.Link href="#">Login</Nav.Link>
             <Nav.Link href="#">Become a Seller</Nav.Link>
-            <Nav.Link href="#">Cart 🛒</Nav.Link>
+            <Link to="/cart" className="cart-icon">
+        <FaShoppingCart />
+        {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
+      </Link>
+            <Nav.Link onClick={() => navigate("/wishlist")}>
+  <FaHeart className="wishlist-icon" /> Wishlist
+</Nav.Link>
+
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -84,9 +97,8 @@ const FlipkartNavBar = () => {
    
      {/* Floating Cart Icon */}
       <div className="floating-cart">
-        <button className="cart-button">
+        <button className="cart-button" >
           <FaShoppingCart size={24} />
-          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
         </button>
       </div>
       {/* Footer */}

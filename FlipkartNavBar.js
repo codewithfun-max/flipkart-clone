@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 
 
 const FlipkartNavBar = ({product}) => {
+  const isAuthenticated = localStorage.getItem("isAuthenticated");
+  const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
 
     const [cartCount, setCartCount] = useState(3); // Replace with actual cart count from state
@@ -26,7 +28,13 @@ const FlipkartNavBar = ({product}) => {
   };
   const { cart } = useContext(CartContext);
   const { addToCart } = useContext(CartContext);
-
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <>
@@ -40,10 +48,28 @@ const FlipkartNavBar = ({product}) => {
           <Form className="d-flex mx-auto w-50">
             <FormControl type="search" placeholder="Search for products, brands and more" className="me-2" />
             <Button variant="warning">Search</Button>
+        
           </Form>
           <Nav>
-            <Nav.Link href="#">Login</Nav.Link>
-            <Nav.Link href="#">Become a Seller</Nav.Link>
+          <Button variant="primary" as={Link} to="/signup">Sign Up</Button>
+          <Nav.Link as={Link} to="/orders">Orders</Nav.Link>
+
+          {isLoggedIn ? (
+            <>
+              <Nav.Link as={Link} to="/profile">
+                {user?.name || "Profile"}
+              </Nav.Link>
+              <Button variant="outline-light" onClick={handleLogout}>
+                Logout
+              </Button>
+
+            </>
+          ) : (
+            
+            <Nav.Link as={Link} to="/login">Login</Nav.Link>
+           
+          )}
+        
             <Link to="/cart" className="cart-icon">
         <FaShoppingCart />
         {cart.length > 0 && <span className="cart-count">{cart.length}</span>}

@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../components/CartContext";
 import { Navbar, Nav, Form, FormControl, Button, Container, Row, Col } from "react-bootstrap";
@@ -14,7 +15,8 @@ const FlipkartNavBar = ({product}) => {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
   const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
     const [cartCount, setCartCount] = useState(3); // Replace with actual cart count from state
   const settings = {
     dots: true,
@@ -35,7 +37,36 @@ const FlipkartNavBar = ({product}) => {
     localStorage.removeItem("user");
     navigate("/login");
   };
+  const [products, setProducts] = useState([]); // Add this line to initialize products
+  useEffect(() => {
+    // Mock API Fetch (Replace with real API)
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products"); // Example API
+        const data = await response.json();
+        setProducts(data); // Ensure this updates products
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
+    fetchProducts();
+  }, []);
+
+  const handleInputChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+  
+    if (query === "") {
+      setFilteredProducts([]);
+    } else {
+      const filtered = products.filter((products) =>
+        product.name.toLowerCase().includes(query)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+  
   return (
     <>
       {/* Navbar */}
@@ -46,9 +77,33 @@ const FlipkartNavBar = ({product}) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Form className="d-flex mx-auto w-50">
-            <FormControl type="search" placeholder="Search for products, brands and more" className="me-2" />
+          <FormControl
+  type="search"
+  placeholder="Search for products, brands and more"
+  className="me-2"
+  value={searchQuery}
+  onChange={handleInputChange}
+/>
             <Button variant="warning">Search</Button>
-        
+         {/* Search Results Dropdown */}
+         {searchQuery && (
+            <div className="search-results bg-white position-absolute w-100 border mt-2 p-2 shadow">
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <Link
+                    key={product.id}
+                    to={`/product/${product.id}`}
+                    className="d-block p-2 text-dark text-decoration-none border-bottom"
+                    onClick={() => setSearchQuery("")}
+                  >
+                    {product.name}
+                  </Link>
+                ))
+              ) : (
+                <p className="p-2 text-muted">No results found</p>
+              )}
+            </div>
+          )}
           </Form>
           <Nav>
           <Button variant="primary" as={Link} to="/signup">Sign Up</Button>

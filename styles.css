@@ -709,4 +709,310 @@ background: none;
   background: #218838;
 }
 
+/* Sidebar */
+.admin-sidebar {
+  background-color: #343a40;
+  color: white;
+  height: 100vh;
+  width: 220px; /* Default width */
+  padding: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
 
+/* Sidebar Hidden */
+.admin-sidebar.closed {
+  width: 50px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Sidebar Heading */
+.admin-sidebar h4 {
+  margin: 0;
+  font-size: 16px;
+  text-align: left;
+  padding: 10px 30px 40px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.admin-sidebar.closed h4,
+.admin-sidebar.closed ul {
+  display: none; /* Hide heading and menu when closed */
+}
+
+/* Sidebar Menu */
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar ul li {
+  padding: 10px;
+  text-align: left;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admin-sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  padding-left: 8px;
+}
+
+.admin-sidebar ul li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Main Content */
+.admin-content {
+  padding: 20px;
+  margin-left: 220px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.admin-content.shift {
+  margin-left: 50px;
+}
+
+
+
+/* Analytics Cards */
+.analytics-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-card h6 {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.analytics-card p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Order Statistics Chart */
+.order-chart {
+  width: 60%;
+  height: 250px;
+  margin: auto;
+  border: none;
+  text-align: right;
+}
+/* General styling */
+.mp-container {
+  padding: 20px;
+}
+
+.mp-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+.mp-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+/* Product search bar */
+.mp-search-input {
+  max-width: 300px;  /* Restrict width */
+  width: 100%;       /* Make it responsive */
+}
+.mp-add-btn {
+  white-space: nowrap;  /* Prevents button text from breaking */
+}
+.mp-add-btn:hover {
+  background-color: #0056b3;
+}
+/* Product List Container */
+.mp-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+}
+
+/* Individual Product Row */
+.mp-product-card {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.mp-product-card:hover {
+  background: #f8f9fa;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Product Image */
+.mp-product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 18px;
+  border: 1px solid #007bff;
+  transition: transform 0.3s ease-in-out;
+}
+
+.mp-product-card:hover .mp-product-image {
+  transform: scale(1.06);
+}
+
+/* Product Info */
+.mp-product-info {
+  flex: 1;
+}
+
+.mp-product-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mp-tag-icon {
+  color: #007bff;
+  font-size: 16px;
+}
+
+/* Price */
+.mp-product-price {
+  font-size: 15px;
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* Category */
+.mp-product-category {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+/* Action Icons */
+.mp-actions {
+  display: flex;
+  gap: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.mp-action-icon {
+  transition: 0.3s;
+}
+
+.mp-action-icon.edit {
+  color: #2f4be7;
+}
+
+.mp-action-icon.edit:hover {
+  color: #3647a5;
+}
+
+.mp-action-icon.delete {
+  color: #dc3545;
+}
+
+.mp-action-icon.delete:hover {
+  color: #b02a37;
+}
+
+/* Carousel */
+.mp-carousel .carousel-inner {
+  border-radius: 8px 8px 0 0;
+}
+
+.mp-carousel .carousel-item img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.mp-modal .modal-content {
+  border-radius: 12px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.mp-modal-header {
+  background-color: #007bff;
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.mp-modal-body {
+  padding: 20px;
+  background: #f8f9fa;
+}
+
+.mp-modal-footer {
+  background: #f1f1f1;
+  border-radius: 0 0 12px 12px;
+}
+
+.mp-form-label {
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

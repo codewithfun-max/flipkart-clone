@@ -18,6 +18,8 @@ const AdminLogin = () => {
 
     if (email === adminEmail && password === adminPassword) {
       localStorage.setItem("isAdminAuthenticated", "true");
+      localStorage.setItem("user", JSON.stringify({ email, role: "admin" }));
+
       navigate("/admin"); // Redirect to Admin Dashboard
     } else {
       setError("Invalid email or password");
